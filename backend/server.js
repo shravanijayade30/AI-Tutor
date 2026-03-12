@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import Groq from "groq-sdk";
 import path from "path";
+import fs from "fs";
 import { fileURLToPath } from "url";
 
 dotenv.config();
@@ -137,13 +138,16 @@ app.post("/api/chat/stream", async (req, res) => {
   }
 });
 
-// Serve frontend build for a single local link (after building frontend).
+// Serve frontend build only if it exists (local single-link setup).
 const frontendDist = path.join(__dirname, "..", "frontend", "dist");
-app.use(express.static(frontendDist));
-// Avoid catching API routes with the SPA fallback.
-app.get(/^\/(?!api).*/, (req, res) => {
-  res.sendFile(path.join(frontendDist, "index.html"));
-});
+const frontendIndex = path.join(frontendDist, "index.html");
+if (fs.existsSync(frontendIndex)) {
+  app.use(express.static(frontendDist));
+  // Avoid catching API routes with the SPA fallback.
+  app.get(/^\/(?!api).*/, (req, res) => {
+    res.sendFile(frontendIndex);
+  });
+}
 
 app.listen(PORT, () => {
   console.log(`AI Tutor backend running on port ${PORT}`);
