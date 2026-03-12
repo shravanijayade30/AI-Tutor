@@ -1,0 +1,67 @@
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+body {
+  font-family: "Manrope", sans-serif;
+}
+
+.gradient-surface {
+  position: relative;
+  background:
+    radial-gradient(900px 500px at 10% -10%, rgba(47, 111, 237, 0.22), transparent 60%),
+    radial-gradient(800px 400px at 90% 8%, rgba(29, 214, 178, 0.16), transparent 55%),
+    radial-gradient(700px 500px at 20% 90%, rgba(250, 149, 56, 0.16), transparent 60%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 247, 251, 1));
+}
+
+.gradient-surface::before,
+.gradient-surface::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+}
+
+/* Keep content above decorative layers */
+.gradient-surface > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Soft geometric halos */
+.gradient-surface::before {
+  background:
+    conic-gradient(from 120deg at 20% 20%, rgba(47, 111, 237, 0.08), transparent 55%),
+    conic-gradient(from 300deg at 80% 30%, rgba(29, 214, 178, 0.08), transparent 55%),
+    conic-gradient(from 10deg at 60% 85%, rgba(250, 149, 56, 0.08), transparent 55%);
+  filter: blur(10px);
+  opacity: 0.9;
+}
+
+/* Subtle noise texture */
+.gradient-surface::after {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='160' height='160' filter='url(%23n)' opacity='0.06'/></svg>");
+  mix-blend-mode: multiply;
+}
+
+.dark .gradient-surface {
+  background:
+    radial-gradient(900px 500px at 10% -10%, rgba(47, 111, 237, 0.24), transparent 60%),
+    radial-gradient(800px 400px at 90% 8%, rgba(29, 214, 178, 0.18), transparent 55%),
+    radial-gradient(700px 500px at 20% 90%, rgba(250, 149, 56, 0.14), transparent 60%),
+    linear-gradient(180deg, rgba(10, 15, 20, 0.98), rgba(7, 10, 16, 1));
+}
+
+.dark .gradient-surface::after {
+  opacity: 0.04;
+  mix-blend-mode: screen;
+}
